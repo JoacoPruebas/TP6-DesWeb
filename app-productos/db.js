@@ -1,22 +1,22 @@
 // db.js
-let personas = [];
+let productos = [];
 
 function getAll() {
-  return personas;
+  return productos;
 }
 
-function add(persona) {
-  personas.push(persona);
+function add(producto) {
+  productos.push(producto);
 }
 
 function remove(nombre) {
-  personas = personas.filter(p => p.nombre !== nombre);
+  productos = productos.filter(p => p.nombre !== nombre);
 }
 
 function update(nombreOriginal, nuevosDatos) {
-  const index = personas.findIndex(p => p.nombre === nombreOriginal);
+  const index = productos.findIndex(p => p.nombre === nombreOriginal);
   if (index !== -1) {
-    personas[index] = { ...personas[index], ...nuevosDatos };
+    productos[index] = { ...productos[index], ...nuevosDatos };
   }
 }
 
