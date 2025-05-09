@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Personas</title>
+</head>
+<body>
+  <h1>Personas</h1>
+  <ul id="lista"></ul>
+
+  <h2>Agregar / Editar Persona</h2>
+  <input id="nombre" placeholder="Nombre">
+  <input id="apellido" placeholder="Apellido">
+  <input id="edad" placeholder="Edad" type="number">
+  <button onclick="agregar()">Guardar</button>
+
+  <script>
+    let modoEdicion = false;
+    let nombreOriginal = "";
+
+    async function cargarPersonas() {
+      const res = await fetch('/personas');
+      const personas = await res.json();
+      const lista = document.getElementById('lista');
+      lista.innerHTML = '';
+      personas.forEach(p => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          ${p.nombre} ${p.apellido} (${p.edad}) 
+          <button onclick="borrar('${p.nombre}')">Eliminar</button>
+          <button onclick="editar('${p.nombre}', '${p.apellido}', ${p.edad})">Editar</button>
+        `;
+        lista.appendChild(li);
+      });
+    }
+
+    async function agregar() {
+      const nombre = document.getElementById('nombre').value;
+      const apellido = document.getElementById('apellido').value;
+      const edad = parseInt(document.getElementById('edad').value);
+
+      if (modoEdicion) {
+        await fetch(`/personas/${nombreOriginal}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, apellido, edad })
+        });
+        modoEdicion = false;
+        nombreOriginal = "";
+      } else {
+        await fetch('/personas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, apellido, edad })
+        });
+      }
+
+      document.getElementById('nombre').value = '';
+      document.getElementById('apellido').value = '';
+      document.getElementById('edad').value = '';
+      cargarPersonas();
+    }
+
+    function editar(nombre, apellido, edad) {
+      document.getElementById('nombre').value = nombre;
+      document.getElementById('apellido').value = apellido;
+      document.getElementById('edad').value = edad;
+      modoEdicion = true;
+      nombreOriginal = nombre;
+    }
+
+    async function borrar(nombre) {
+      await fetch(`/personas/${nombre}`, { method: 'DELETE' });
+      cargarPersonas();
+    }
+
+    cargarPersonas();
+  </script>
+</body>
+</html>
