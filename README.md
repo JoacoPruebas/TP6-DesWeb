@@ -75,11 +75,12 @@ node server.js
 
 ## 🔁 Intercambio de Capas
 
-Se realizaron intercambios entre capas de ambas apps, tal como solicita la consigna. Esto se puede verificar en los **mensajes de commit**, por ejemplo:
+Se realizaron intercambios entre capas de ambas apps, tal como solicita la consigna. Esto se puede verificar en los mensajes de commit, por ejemplo:
 
-- `reutilizada db de personas en app-productos`
-- `compartida lógica server entre app-productos y app-personas`
----
+"reutilizacion db personas para app producto"
+"reutilizacion server personas para app productos"
+"adaptacion de db para app de productos"
+"adaptacion server para app de productos"
 
 ## ✅ Requisitos
 
